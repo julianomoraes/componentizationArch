@@ -1,1 +1,1 @@
-# androidComponentizationArchitecture
+# Android Componentization Architecture
