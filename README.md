@@ -1,3 +1,3 @@
-# Netflix Android Componentization Architecture
+# Netflix's Componentization Architecture
 
 Sample for Droidcon NYC 2018
