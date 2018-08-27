@@ -1,1 +1,1 @@
-# Android Componentization Architecture
+# Netflix Android Componentization Architecture
