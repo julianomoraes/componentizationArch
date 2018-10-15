@@ -1,6 +1,7 @@
 # Netflix’s Android Componentization Architecture
 
 ## Sample code for Droidcon NYC 2018
+[Droidcon NYC Talk](https://youtu.be/dS9gho9Rxn4)
 
 ### Fragment / Activity
 
