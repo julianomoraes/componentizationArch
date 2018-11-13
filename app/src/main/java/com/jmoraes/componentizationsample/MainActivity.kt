@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         initComponents(findViewById(R.id.root))
-        initUserInteractionEventsObservable()
 
         startSimulation()
     }
@@ -28,18 +27,12 @@ class MainActivity : AppCompatActivity() {
     /**
      * Initialize all UI Components
      */
+    @SuppressLint("CheckResult")
     private fun initComponents(rootViewContainer: ViewGroup) {
         LoadingComponent(rootViewContainer, EventBusFactory.get(this))
+        // If the UI Component emits Interaction Events it can be observed like this
         ErrorComponent(rootViewContainer, EventBusFactory.get(this))
-        SuccessComponent(rootViewContainer, EventBusFactory.get(this))
-    }
-
-    /**
-     * Observes on UserInteractionEvents reacting when required
-     */
-    @SuppressLint("CheckResult")
-    private fun initUserInteractionEventsObservable() {
-        EventBusFactory.get(this).getSafeManagedObservable(UserInteractionEvent::class.java)
+            .getUserInteractionEvents()
             .subscribe {
                 when (it) {
                     UserInteractionEvent.IntentTapRetry -> {
@@ -48,6 +41,7 @@ class MainActivity : AppCompatActivity() {
                     // ... all other events if any should be here
                 }
             }
+        SuccessComponent(rootViewContainer, EventBusFactory.get(this))
     }
 
     /**

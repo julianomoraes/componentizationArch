@@ -5,10 +5,22 @@ import android.support.annotation.VisibleForTesting
 import android.view.ViewGroup
 import com.jmoraes.componentizationsample.basic.eventTypes.ScreenStateEvent
 import com.jmoraes.componentizationsample.basic.components.uiViews.ErrorView
+import com.jmoraes.componentizationsample.basic.eventTypes.UserInteractionEvent
 import com.netflix.arch.EventBusFactory
+import com.netflix.arch.UIComponent
+import com.netflix.arch.UIView
+import io.reactivex.Observable
 
 @SuppressLint("CheckResult")
-open class ErrorComponent(container: ViewGroup, bus: EventBusFactory) {
+open class ErrorComponent(container: ViewGroup, private val bus: EventBusFactory) : UIComponent<UserInteractionEvent> {
+    override fun getContainerId(): Int {
+        return uiView.containerId
+    }
+
+    override fun getUserInteractionEvents(): Observable<UserInteractionEvent> {
+        return bus.getSafeManagedObservable(UserInteractionEvent::class.java)
+    }
+
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     val uiView = initView(container, bus)
 

@@ -5,12 +5,13 @@ import android.support.annotation.VisibleForTesting
 import android.view.ViewGroup
 import com.netflix.arch.ComponentEvent
 import com.netflix.arch.EventBusFactory
+import com.netflix.arch.UIComponent
 import com.netflix.elfo.components.PlayerUserInteractionEvents
 import com.netflix.elfo.components.PrimaryControlsUIView
 import io.reactivex.Observable
 
 @SuppressLint("CheckResult")
-class PrimaryControlsComponent(container: ViewGroup, private val bus: EventBusFactory) {
+class PrimaryControlsComponent(container: ViewGroup, private val bus: EventBusFactory) : UIComponent<PlayerUserInteractionEvents> {
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     val uiView = initView(container, bus)
 
@@ -18,9 +19,9 @@ class PrimaryControlsComponent(container: ViewGroup, private val bus: EventBusFa
         return PrimaryControlsUIView(container, bus)
     }
 
-    val containerId: Int = uiView.containerId
+    override fun getContainerId() = uiView.containerId
 
-    fun getUserInteractionEvents(): Observable<PlayerUserInteractionEvents> {
+    override fun getUserInteractionEvents(): Observable<PlayerUserInteractionEvents> {
         return bus.getSafeManagedObservable(PlayerUserInteractionEvents::class.java)
     }
 

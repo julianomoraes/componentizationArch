@@ -72,13 +72,13 @@ class PlayerActivity : AppCompatActivity() {
         mainContainerConstraintSet.clone(rootViewContainer)
 
         mainContainerConstraintSet.connect(
-            primaryControlsComponent.containerId,
+            primaryControlsComponent.getContainerId(),
             ConstraintSet.TOP,
             ConstraintSet.PARENT_ID,
             ConstraintSet.TOP
         )
         mainContainerConstraintSet.connect(
-            primaryControlsComponent.containerId,
+            primaryControlsComponent.getContainerId(),
             ConstraintSet.BOTTOM,
             ConstraintSet.PARENT_ID,
             ConstraintSet.BOTTOM
