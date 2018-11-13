@@ -16,7 +16,7 @@ class LauncherActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.button_player).setOnClickListener {
-
+            startActivity(Intent(this@LauncherActivity, PlayerActivity::class.java))
         }
     }
 }
