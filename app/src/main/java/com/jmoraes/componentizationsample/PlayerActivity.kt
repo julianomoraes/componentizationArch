@@ -1,9 +1,12 @@
 package com.jmoraes.componentizationsample
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
+import android.support.constraint.ConstraintSet
+import android.view.ViewGroup
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -19,6 +22,9 @@ import com.google.android.exoplayer2.util.Util
 import com.jmoraes.componentizationsample.basic.components.LoadingComponent
 import com.jmoraes.componentizationsample.basic.eventTypes.ScreenStateEvent
 import com.netflix.arch.EventBusFactory
+import com.jmoraes.componentizationsample.player.components.PlayerEvents
+import com.netflix.elfo.components.PlayerUserInteractionEvents
+import com.jmoraes.componentizationsample.player.components.PrimaryControlsComponent
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
@@ -26,17 +32,60 @@ import java.util.concurrent.TimeUnit
 class PlayerActivity : AppCompatActivity() {
     private var player: SimpleExoPlayer? = null
     private val playerView: PlayerView by lazy { findViewById<PlayerView>(R.id.player_view) }
-    //private lateinit var primaryControlsUIView: PrimaryControlsUIView<PlayerEvents>
-    //private lateinit var playbackSurfaceUIView: PlaybackSurfaceUIView<PlayerEvents>
+    private val eventBusFactory = EventBusFactory.get(this)
+    private lateinit var primaryControlsComponent: PrimaryControlsComponent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
         val container = findViewById<ConstraintLayout>(R.id.player_root)
 
-        LoadingComponent(container, EventBusFactory.get(this))
-        EventBusFactory.get(this).emit(ScreenStateEvent::class.java, ScreenStateEvent.Loading)
+        initializeUIComponents(container)
+        layoutUIComponents(container)
+    }
 
+    @SuppressLint("CheckResult")
+    private fun initializeUIComponents(container: ViewGroup) {
+        // Reusing this component from the Basic Sample package
+        LoadingComponent(container, eventBusFactory)
+
+        primaryControlsComponent = PrimaryControlsComponent(container, eventBusFactory)
+        primaryControlsComponent.getUserInteractionEvents()
+            .subscribe {
+                when (it) {
+                    PlayerUserInteractionEvents.IntentPlayPauseClicked -> {
+                        player?.playWhenReady = !player?.playWhenReady!!
+                    }
+                    PlayerUserInteractionEvents.IntentRwClicked -> {
+                        player?.seekTo(player?.currentPosition!! / 2)
+                    }
+                    PlayerUserInteractionEvents.IntentFwClicked -> {
+                        player?.seekTo(player?.currentPosition!! * 2)
+                    }
+                }
+            }
+    }
+
+    private fun layoutUIComponents(rootViewContainer: ConstraintLayout) {
+        // Create a constraintSet and clone it from the main container
+        val mainContainerConstraintSet = ConstraintSet()
+        mainContainerConstraintSet.clone(rootViewContainer)
+
+        mainContainerConstraintSet.connect(
+            primaryControlsComponent.containerId,
+            ConstraintSet.TOP,
+            ConstraintSet.PARENT_ID,
+            ConstraintSet.TOP
+        )
+        mainContainerConstraintSet.connect(
+            primaryControlsComponent.containerId,
+            ConstraintSet.BOTTOM,
+            ConstraintSet.PARENT_ID,
+            ConstraintSet.BOTTOM
+        )
+
+        // Apply the constraints from all UI components to the parent
+        mainContainerConstraintSet.applyTo(rootViewContainer)
     }
 
     override fun onStart() {
@@ -92,22 +141,21 @@ class PlayerActivity : AppCompatActivity() {
             when (playbackState) {
                 // The player does not have any media to play yet.
                 Player.STATE_IDLE -> {
-                    //EventBusFactory.emit<LoadingEvents>(LoadingEvents.Loading)
+                    eventBusFactory.emit(ScreenStateEvent::class.java, ScreenStateEvent.Loading)
                 }
                 // The player is buffering (loading the content)
                 Player.STATE_BUFFERING -> {
-//                    emit<LoadingEvents>(LoadingEvents.Loading)
-//                    emit<PlayerEvents>(PlayerEvents.Buffering)
+                    eventBusFactory.emit(ScreenStateEvent::class.java, ScreenStateEvent.Loading)
+                    eventBusFactory.emit(PlayerEvents::class.java, PlayerEvents.Buffering)
                 }
                 // The player is able to immediately play
                 Player.STATE_READY -> {
-                    EventBusFactory.get(this@PlayerActivity).emit(ScreenStateEvent::class.java, ScreenStateEvent.Loaded)
-//                    emit<LoadingEvents>(LoadingEvents.Loaded)
-//                    if (playWhenReady) {
-//                        emit<PlayerEvents>(PlayerEvents.PlayStarted)
-//                    } else {
-//                        emit<PlayerEvents>(PlayerEvents.Paused)
-//                    }
+                    eventBusFactory.emit(ScreenStateEvent::class.java, ScreenStateEvent.Loaded)
+                    if (playWhenReady) {
+                        eventBusFactory.emit(PlayerEvents::class.java, PlayerEvents.PlayStarted)
+                    } else {
+                        eventBusFactory.emit(PlayerEvents::class.java, PlayerEvents.Paused)
+                    }
                 }
                 // The player has finished playing the media
                 Player.STATE_ENDED -> {
