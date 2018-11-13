@@ -7,8 +7,12 @@ import com.jmoraes.componentizationsample.views.ErrorView
 import com.netflix.arch.EventBusFactory
 
 @SuppressLint("CheckResult")
-class ErrorPresenter(container: ViewGroup, bus: EventBusFactory) {
-    private val uiView = ErrorView(container, bus)
+open class ErrorComponent(container: ViewGroup, bus: EventBusFactory) {
+    open val uiView = initView(container, bus)
+
+    open fun initView(container: ViewGroup, bus: EventBusFactory): ErrorView {
+        return ErrorView(container, bus)
+    }
 
     init {
         bus.getSafeManagedObservable(ScreenStateEvent::class.java)

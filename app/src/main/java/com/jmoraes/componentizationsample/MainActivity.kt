@@ -6,17 +6,12 @@ import android.support.v7.app.AppCompatActivity
 import android.view.ViewGroup
 import com.jmoraes.componentizationsample.eventTypes.ScreenStateEvent
 import com.jmoraes.componentizationsample.eventTypes.UserInteractionEvent
-import com.jmoraes.componentizationsample.presenters.ErrorPresenter
-import com.jmoraes.componentizationsample.presenters.LoadingPresenter
-import com.jmoraes.componentizationsample.presenters.SuccessPresenter
-import com.jmoraes.componentizationsample.views.ErrorView
-import com.jmoraes.componentizationsample.views.LoadingView
-import com.jmoraes.componentizationsample.views.SuccessView
+import com.jmoraes.componentizationsample.presenters.ErrorComponent
+import com.jmoraes.componentizationsample.presenters.LoadingComponent
+import com.jmoraes.componentizationsample.presenters.SuccessComponent
 import com.netflix.arch.EventBusFactory
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
@@ -34,9 +29,9 @@ class MainActivity : AppCompatActivity() {
      * Initialize all UI Components
      */
     private fun initComponents(rootViewContainer: ViewGroup) {
-        LoadingPresenter(rootViewContainer, EventBusFactory.get(this))
-        ErrorPresenter(rootViewContainer, EventBusFactory.get(this))
-        SuccessPresenter(rootViewContainer, EventBusFactory.get(this))
+        LoadingComponent(rootViewContainer, EventBusFactory.get(this))
+        ErrorComponent(rootViewContainer, EventBusFactory.get(this))
+        SuccessComponent(rootViewContainer, EventBusFactory.get(this))
     }
 
     /**

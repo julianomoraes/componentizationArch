@@ -3,13 +3,18 @@ package com.jmoraes.componentizationsample.presenters
 import android.annotation.SuppressLint
 import android.view.ViewGroup
 import com.jmoraes.componentizationsample.eventTypes.ScreenStateEvent
+import com.jmoraes.componentizationsample.views.LoadingView
 import com.jmoraes.componentizationsample.views.SuccessView
 import com.netflix.arch.EventBusFactory
 import io.reactivex.rxkotlin.subscribeBy
 
 @SuppressLint("CheckResult")
-class SuccessPresenter(container: ViewGroup, bus: EventBusFactory) {
-    private val uiView = SuccessView(container, bus)
+open class SuccessComponent(container: ViewGroup, bus: EventBusFactory) {
+    val uiView = initView(container, bus)
+
+    open fun initView(container: ViewGroup, bus: EventBusFactory): SuccessView {
+        return SuccessView(container, bus)
+    }
 
     init {
         bus.getSafeManagedObservable(ScreenStateEvent::class.java)
