@@ -4,11 +4,11 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.ViewGroup
-import com.jmoraes.componentizationsample.eventTypes.ScreenStateEvent
-import com.jmoraes.componentizationsample.eventTypes.UserInteractionEvent
-import com.jmoraes.componentizationsample.components.ErrorComponent
-import com.jmoraes.componentizationsample.components.LoadingComponent
-import com.jmoraes.componentizationsample.components.SuccessComponent
+import com.jmoraes.componentizationsample.basic.eventTypes.ScreenStateEvent
+import com.jmoraes.componentizationsample.basic.eventTypes.UserInteractionEvent
+import com.jmoraes.componentizationsample.basic.components.ErrorComponent
+import com.jmoraes.componentizationsample.basic.components.LoadingComponent
+import com.jmoraes.componentizationsample.basic.components.SuccessComponent
 import com.netflix.arch.EventBusFactory
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers

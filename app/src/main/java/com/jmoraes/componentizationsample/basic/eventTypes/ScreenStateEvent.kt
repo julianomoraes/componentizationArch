@@ -1,4 +1,4 @@
-package com.jmoraes.componentizationsample.eventTypes
+package com.jmoraes.componentizationsample.basic.eventTypes
 
 import com.netflix.arch.ComponentEvent
 
