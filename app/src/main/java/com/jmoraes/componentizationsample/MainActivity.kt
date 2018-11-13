@@ -1,5 +1,6 @@
 package com.jmoraes.componentizationsample
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import com.jmoraes.componentizationsample.presenters.SuccessPresenter
 import com.jmoraes.componentizationsample.views.ErrorView
 import com.jmoraes.componentizationsample.views.LoadingView
 import com.jmoraes.componentizationsample.views.SuccessView
+import com.netflix.arch.EventBusFactory
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
@@ -18,43 +20,32 @@ import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
-    private var destroyObservable: PublishSubject<Unit> = PublishSubject.create()
-    private var screenStateEvent: PublishSubject<ScreenStateEvent> = PublishSubject.create()
-
-    private lateinit var loadingView: LoadingView
-    private lateinit var successView: SuccessView
-    private lateinit var errorView: ErrorView
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // recreates the observables
-        destroyObservable = PublishSubject.create()
-        screenStateEvent = PublishSubject.create()
-
         setContentView(R.layout.activity_main)
 
-        val rootViewContainer = findViewById<ViewGroup>(android.R.id.content)
-
-        initComponents(rootViewContainer)
+        initComponents(findViewById(R.id.root))
         initUserInteractionEventsObservable()
 
         startSimulation()
     }
 
     /**
+     * Initialize all UI Components
+     */
+    private fun initComponents(rootViewContainer: ViewGroup) {
+        LoadingPresenter(rootViewContainer, EventBusFactory.get(this))
+        ErrorPresenter(rootViewContainer, EventBusFactory.get(this))
+        SuccessPresenter(rootViewContainer, EventBusFactory.get(this))
+    }
+
+    /**
      * Observes on UserInteractionEvents reacting when required
      */
+    @SuppressLint("CheckResult")
     private fun initUserInteractionEventsObservable() {
-        Observable
-            .merge<UserInteractionEvent>(
-                loadingView.getUserInteractionEvents(),
-                errorView.getUserInteractionEvents(),
-                successView.getUserInteractionEvents()
-            )
-            .takeUntil(destroyObservable)
-            .subscribeBy {
+        EventBusFactory.get(this).getSafeManagedObservable(UserInteractionEvent::class.java)
+            .subscribe {
                 when (it) {
                     UserInteractionEvent.IntentTapRetry -> {
                         startSimulation()
@@ -65,47 +56,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Initialize all UI Components
-     */
-    private fun initComponents(rootViewContainer: ViewGroup) {
-        loadingView = LoadingView(rootViewContainer)
-        LoadingPresenter(loadingView, screenStateEvent, destroyObservable)
-
-        successView = SuccessView(rootViewContainer)
-        SuccessPresenter(successView, screenStateEvent, destroyObservable)
-
-        errorView = ErrorView(rootViewContainer)
-        ErrorPresenter(errorView, screenStateEvent, destroyObservable)
-    }
-
-    /**
      * Start a simulation emitting events every 2 seconds
      */
     private fun startSimulation() {
         Observable.just(Any())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext {
-                screenStateEvent.onNext(ScreenStateEvent.Loading)
+                EventBusFactory.get(this)
+                    .emit(ScreenStateEvent::class.java, ScreenStateEvent.Loading)
             }
             .delay(2, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext {
-                screenStateEvent.onNext(ScreenStateEvent.Loaded)
+                EventBusFactory.get(this)
+                    .emit(ScreenStateEvent::class.java, ScreenStateEvent.Loaded)
             }
             .delay(2, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext {
-                screenStateEvent.onNext(ScreenStateEvent.Error)
+                EventBusFactory.get(this).emit(ScreenStateEvent::class.java, ScreenStateEvent.Error)
             }
             .subscribe()
-    }
-
-    /**
-     * Stop all subscriptions
-     */
-    override fun onDestroy() {
-        super.onDestroy()
-        destroyObservable.onNext(Unit)
-        destroyObservable.onComplete()
     }
 }

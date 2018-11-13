@@ -5,17 +5,33 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import com.jmoraes.componentizationsample.R
-import com.jmoraes.componentizationsample.arch.UIView
 import com.jmoraes.componentizationsample.eventTypes.UserInteractionEvent
+import com.netflix.arch.EventBusFactory
+import com.netflix.arch.UIView
 
-class ErrorView(container: ViewGroup) : UIView<UserInteractionEvent>(container) {
-    override val view: View = LayoutInflater.from(container.context).inflate(R.layout.error, container, false)
+class ErrorView(container: ViewGroup, eventBusFactory: EventBusFactory) :
+    UIView<UserInteractionEvent>(container) {
+    private val view: View =
+        LayoutInflater.from(container.context).inflate(R.layout.error, container, true)
+            .findViewById(R.id.error_container)
+
+    override val containerId: Int = 0
 
     init {
-        container.addView(view)
         view.findViewById<Button>(R.id.button)
             .setOnClickListener {
-                userInteractionEvents.onNext(UserInteractionEvent.IntentTapRetry)
+                eventBusFactory.emit(
+                    UserInteractionEvent::class.java,
+                    UserInteractionEvent.IntentTapRetry
+                )
             }
+    }
+
+    override fun show() {
+        view.visibility = View.VISIBLE
+    }
+
+    override fun hide() {
+        view.visibility = View.GONE
     }
 }
