@@ -6,9 +6,9 @@ import android.support.v7.app.AppCompatActivity
 import android.view.ViewGroup
 import com.jmoraes.componentizationsample.eventTypes.ScreenStateEvent
 import com.jmoraes.componentizationsample.eventTypes.UserInteractionEvent
-import com.jmoraes.componentizationsample.presenters.ErrorComponent
-import com.jmoraes.componentizationsample.presenters.LoadingComponent
-import com.jmoraes.componentizationsample.presenters.SuccessComponent
+import com.jmoraes.componentizationsample.components.ErrorComponent
+import com.jmoraes.componentizationsample.components.LoadingComponent
+import com.jmoraes.componentizationsample.components.SuccessComponent
 import com.netflix.arch.EventBusFactory
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers

@@ -1,9 +1,9 @@
-package com.jmoraes.componentizationsample.presenters
+package com.jmoraes.componentizationsample.components
 
 import android.arch.lifecycle.LifecycleOwner
 import android.view.ViewGroup
 import com.jmoraes.componentizationsample.eventTypes.ScreenStateEvent
-import com.jmoraes.componentizationsample.views.ErrorView
+import com.jmoraes.componentizationsample.components.uiViews.ErrorView
 import com.netflix.arch.EventBusFactory
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock

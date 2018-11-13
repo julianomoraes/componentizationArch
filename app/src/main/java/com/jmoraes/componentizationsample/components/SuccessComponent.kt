@@ -1,17 +1,17 @@
-package com.jmoraes.componentizationsample.presenters
+package com.jmoraes.componentizationsample.components
 
 import android.annotation.SuppressLint
 import android.view.ViewGroup
 import com.jmoraes.componentizationsample.eventTypes.ScreenStateEvent
-import com.jmoraes.componentizationsample.views.ErrorView
+import com.jmoraes.componentizationsample.components.uiViews.SuccessView
 import com.netflix.arch.EventBusFactory
 
 @SuppressLint("CheckResult")
-open class ErrorComponent(container: ViewGroup, bus: EventBusFactory) {
-    open val uiView = initView(container, bus)
+open class SuccessComponent(container: ViewGroup, bus: EventBusFactory) {
+    val uiView = initView(container, bus)
 
-    open fun initView(container: ViewGroup, bus: EventBusFactory): ErrorView {
-        return ErrorView(container, bus)
+    open fun initView(container: ViewGroup, bus: EventBusFactory): SuccessView {
+        return SuccessView(container, bus)
     }
 
     init {
@@ -22,10 +22,10 @@ open class ErrorComponent(container: ViewGroup, bus: EventBusFactory) {
                         uiView.hide()
                     }
                     ScreenStateEvent.Loaded -> {
-                        uiView.hide()
+                        uiView.show()
                     }
                     ScreenStateEvent.Error -> {
-                        uiView.show()
+                        uiView.hide()
                     }
                 }
             }

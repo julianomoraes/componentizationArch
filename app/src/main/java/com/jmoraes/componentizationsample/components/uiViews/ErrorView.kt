@@ -1,4 +1,4 @@
-package com.jmoraes.componentizationsample.views
+package com.jmoraes.componentizationsample.components.uiViews
 
 import android.view.LayoutInflater
 import android.view.View
