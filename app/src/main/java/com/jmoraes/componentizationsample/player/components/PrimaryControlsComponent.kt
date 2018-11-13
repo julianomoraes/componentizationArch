@@ -11,7 +11,7 @@ import com.netflix.elfo.components.PrimaryControlsUIView
 import io.reactivex.Observable
 
 @SuppressLint("CheckResult")
-class PrimaryControlsComponent(container: ViewGroup, private val bus: EventBusFactory) : UIComponent<PlayerUserInteractionEvents> {
+open class PrimaryControlsComponent(container: ViewGroup, private val bus: EventBusFactory) : UIComponent<PlayerUserInteractionEvents> {
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     val uiView = initView(container, bus)
 

@@ -11,7 +11,7 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
 
-class LoadingPresenterTest {
+class LoadingComponentTest {
     private lateinit var component : LoadingComponent
     private val owner = mock<LifecycleOwner> {
         on { lifecycle } doReturn mock()
@@ -19,7 +19,7 @@ class LoadingPresenterTest {
 
     @Before
     fun setUp() {
-        component = LoadingComponentTest(mock(), EventBusFactory.get(owner))
+        component = LoadingComponentMock(mock(), EventBusFactory.get(owner))
     }
 
     @Test
@@ -44,7 +44,7 @@ class LoadingPresenterTest {
     }
 }
 
-class LoadingComponentTest(container: ViewGroup, bus: EventBusFactory) : LoadingComponent(container, bus) {
+class LoadingComponentMock(container: ViewGroup, bus: EventBusFactory) : LoadingComponent(container, bus) {
     override fun initView(container: ViewGroup): LoadingView {
         return mock()
     }

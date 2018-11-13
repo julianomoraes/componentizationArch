@@ -3,7 +3,7 @@ package com.jmoraes.componentizationsample.basic.components
 import android.arch.lifecycle.LifecycleOwner
 import android.view.ViewGroup
 import com.jmoraes.componentizationsample.basic.eventTypes.ScreenStateEvent
-import com.jmoraes.componentizationsample.basic.components.uiViews.ErrorView
+import com.jmoraes.componentizationsample.basic.components.uiViews.SuccessView
 import com.netflix.arch.EventBusFactory
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
@@ -11,15 +11,15 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
 
-class ErrorPresenterTest {
-    private lateinit var component : ErrorComponent
+class SuccessComponentTest {
+    private lateinit var component : SuccessComponent
     private val owner = mock<LifecycleOwner> {
         on { lifecycle } doReturn mock()
     }
 
     @Before
     fun setUp() {
-        component = ErrorComponentTest(mock(), EventBusFactory.get(owner))
+        component = SuccessComponentMock(mock(), EventBusFactory.get(owner))
     }
 
     @Test
@@ -32,20 +32,20 @@ class ErrorPresenterTest {
     @Test
     fun testLoaded() {
         EventBusFactory.get(owner).emit(ScreenStateEvent::class.java, ScreenStateEvent.Loaded)
-        Mockito.verify(component.uiView, Mockito.times(1)).hide()
-        Mockito.verify(component.uiView, Mockito.times(0)).show()
+        Mockito.verify(component.uiView, Mockito.times(0)).hide()
+        Mockito.verify(component.uiView, Mockito.times(1)).show()
     }
 
     @Test
     fun testError() {
         EventBusFactory.get(owner).emit(ScreenStateEvent::class.java, ScreenStateEvent.Error)
-        Mockito.verify(component.uiView, Mockito.times(0)).hide()
-        Mockito.verify(component.uiView, Mockito.times(1)).show()
+        Mockito.verify(component.uiView, Mockito.times(1)).hide()
+        Mockito.verify(component.uiView, Mockito.times(0)).show()
     }
 }
 
-class ErrorComponentTest(container: ViewGroup, busFactory: EventBusFactory) : ErrorComponent(container, busFactory) {
-    override fun initView(container: ViewGroup, bus: EventBusFactory): ErrorView {
+class SuccessComponentMock(container: ViewGroup, bus: EventBusFactory) : SuccessComponent(container, bus) {
+    override fun initView(container: ViewGroup, bus: EventBusFactory): SuccessView {
         return mock()
     }
 }
