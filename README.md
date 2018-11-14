@@ -1,52 +1,48 @@
 # Netflix’s Android Componentization Architecture
 
-## Sample code for Droidcon NYC 2018
-[Droidcon NYC Talk](https://youtu.be/dS9gho9Rxn4)
+Lifecycle aware, testable and reusable UI components for Android.
 
+[Droidcon NYC 2018 Talk](https://youtu.be/dS9gho9Rxn4)
+
+Droidcon SF 2018 Talk (Comming Soon)
+
+## Sample code
 ### Fragment / Activity
 
 ~~~kotlin
 ...
-LoadingPresenter(
-    LoadingView(rootViewContainer),
-    screenStateEvent,
-    destroyObservable
-)
+LoadingComponent(container, EventBusFactory.get(this))
 ...
 ~~~
 
-### Presenter
+### Component (Presenter/Controller/ViewModel)
 
 ~~~kotlin
 ...
-screenStateEvent
-    .takeUntil(destroyObservable)
-    .subscribeBy(
-        onNext = {
-            when (it) {
-                ScreenStateEvent.Loading -> {
-                    uiView.show()
-                }
-                ScreenStateEvent.Loaded -> {
-                    uiView.hide()
-                }
-                ScreenStateEvent.Error -> {
-                    uiView.hide()
+bus.getSafeManagedObservable(ScreenStateEvent::class.java)
+            .subscribe {
+                when (it) {
+                    ScreenStateEvent.Loading -> {
+                        uiView.show()
+                    }
+                    ScreenStateEvent.Loaded -> {
+                        uiView.hide()
+                    }
+                    ScreenStateEvent.Error -> {
+                        uiView.hide()
+                    }
                 }
             }
-        }
-   )
 ...   
 ~~~
 
-### View
+### UIView
 
 ~~~kotlin
 class LoadingView(container: ViewGroup) : UIView<UserInteractionEvent>(container) {
-    override val view: View = LayoutInflater.from(container.context).inflate(R.layout.loading, container, false)
-    init {
-        container.addView(view)
-    }
-}
+    private val view: View =
+        LayoutInflater.from(container.context).inflate(R.layout.loading, container, true)
+            .findViewById(R.id.loadingSpinner)
+...            
 ~~~
 
