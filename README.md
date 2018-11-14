@@ -46,3 +46,11 @@ class LoadingView(container: ViewGroup) : UIView<UserInteractionEvent>(container
 ...            
 ~~~
 
+## Complete Samples
+[Basic Loading/Error/Success Screen](https://github.com/julianomoraes/componentizationArch/tree/master/app/src/main/java/com/jmoraes/componentizationsample/basic/components)
+
+[Basic Player UI Component](https://github.com/julianomoraes/componentizationArch/tree/master/app/src/main/java/com/jmoraes/componentizationsample/player/components)
+
+## Unit Tests
+[Unit tests for Components](https://github.com/julianomoraes/componentizationArch/tree/master/app/src/test/java/com/jmoraes/componentizationsample)
+
