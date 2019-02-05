@@ -4,7 +4,7 @@ Lifecycle aware, testable and reusable UI components for Android.
 
 [Droidcon NYC 2018 Talk](https://youtu.be/dS9gho9Rxn4)
 
-Droidcon SF 2018 Talk (Comming Soon)
+[Droidcon SF 2018 Talk](https://youtu.be/1cWwfh_5ZQs)
 
 ## Sample code
 ### Fragment / Activity
