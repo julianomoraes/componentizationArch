@@ -1,8 +1,12 @@
+# Componentization Architecture V2
+
+Reactive, Lifecycle aware, testable and reusable UI components for Android using Redux.
+
+[Blog Post](https://medium.com/@NetflixTechBlog/making-our-android-studio-apps-reactive-with-ui-components-redux-5e37aac3b244)
+
 # Netflix’s Android Componentization Architecture
 
 Lifecycle aware, testable and reusable UI components for Android.
-
-[Componentization Architecture V2 Blog Post](https://medium.com/@NetflixTechBlog/making-our-android-studio-apps-reactive-with-ui-components-redux-5e37aac3b244)
 
 [Droidcon NYC 2018 Talk](https://youtu.be/dS9gho9Rxn4)
 
