@@ -2,11 +2,14 @@ package com.jmoraes.componentizationsample
 
 import android.annotation.SuppressLint
 import android.net.Uri
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.constraint.ConstraintLayout
-import android.support.constraint.ConstraintSet
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -21,7 +24,7 @@ import com.google.android.exoplayer2.upstream.TransferListener
 import com.google.android.exoplayer2.util.Util
 import com.jmoraes.componentizationsample.basic.components.LoadingComponent
 import com.jmoraes.componentizationsample.basic.eventTypes.ScreenStateEvent
-import com.netflix.arch.EventBusFactory
+import com.netflix.componentizationV1.EventBusFactory
 import com.jmoraes.componentizationsample.player.components.PlayerEvents
 import com.netflix.elfo.components.PlayerUserInteractionEvents
 import com.jmoraes.componentizationsample.player.components.PrimaryControlsComponent
@@ -29,14 +32,18 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
 
-class PlayerActivity : AppCompatActivity() {
+class PlayerActivity : AppCompatActivity(), LifecycleOwner {
     private var player: SimpleExoPlayer? = null
     private val playerView: PlayerView by lazy { findViewById<PlayerView>(R.id.player_view) }
-    private val eventBusFactory = EventBusFactory.get(this)
     private lateinit var primaryControlsComponent: PrimaryControlsComponent
+    private lateinit var lifecycleRegistry: LifecycleRegistry
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        lifecycleRegistry = LifecycleRegistry(this)
+        lifecycleRegistry.markState(Lifecycle.State.CREATED)
+
         setContentView(R.layout.activity_player)
         val container = findViewById<ConstraintLayout>(R.id.player_root)
 
@@ -47,9 +54,9 @@ class PlayerActivity : AppCompatActivity() {
     @SuppressLint("CheckResult")
     private fun initializeUIComponents(container: ViewGroup) {
         // Reusing this component from the Basic Sample package
-        LoadingComponent(container, eventBusFactory)
+        LoadingComponent(container, EventBusFactory.get(this))
 
-        primaryControlsComponent = PrimaryControlsComponent(container, eventBusFactory)
+        primaryControlsComponent = PrimaryControlsComponent(container, EventBusFactory.get(this))
         primaryControlsComponent.getUserInteractionEvents()
             .subscribe {
                 when (it) {
@@ -107,7 +114,7 @@ class PlayerActivity : AppCompatActivity() {
 
         player?.let {
             playerView.player = it
-            it.addListener(PlayerEventListener())
+            it.addListener(PlayerEventListener(EventBusFactory.get(this)))
         }
 
         // artificial delay to simulate a network request
@@ -136,7 +143,7 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
-    private inner class PlayerEventListener : Player.DefaultEventListener() {
+    private inner class PlayerEventListener(val eventBusFactory: EventBusFactory) : Player.DefaultEventListener() {
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
             when (playbackState) {
                 // The player does not have any media to play yet.
@@ -163,5 +170,9 @@ class PlayerActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun getLifecycle(): Lifecycle {
+        return lifecycleRegistry
     }
 }

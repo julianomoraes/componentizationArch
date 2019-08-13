@@ -2,21 +2,30 @@ package com.jmoraes.componentizationsample
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
 import com.jmoraes.componentizationsample.basic.eventTypes.ScreenStateEvent
 import com.jmoraes.componentizationsample.basic.eventTypes.UserInteractionEvent
 import com.jmoraes.componentizationsample.basic.components.ErrorComponent
 import com.jmoraes.componentizationsample.basic.components.LoadingComponent
 import com.jmoraes.componentizationsample.basic.components.SuccessComponent
-import com.netflix.arch.EventBusFactory
+import com.netflix.componentizationV1.EventBusFactory
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), LifecycleOwner {
+    private lateinit var lifecycleRegistry: LifecycleRegistry
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        lifecycleRegistry = LifecycleRegistry(this)
+        lifecycleRegistry.markState(Lifecycle.State.CREATED)
+
         setContentView(R.layout.activity_main)
 
         initComponents(findViewById(R.id.root))
@@ -66,5 +75,9 @@ class MainActivity : AppCompatActivity() {
                 EventBusFactory.get(this).emit(ScreenStateEvent::class.java, ScreenStateEvent.Error)
             }
             .subscribe()
+    }
+
+    override fun getLifecycle(): Lifecycle {
+        return lifecycleRegistry
     }
 }

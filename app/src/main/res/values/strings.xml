@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">componentizationSample</string>
+    <string name="app_name">Componentization Sample</string>
+    <string name="wildcard_created_at">&#160;- %1$s</string>
 </resources>

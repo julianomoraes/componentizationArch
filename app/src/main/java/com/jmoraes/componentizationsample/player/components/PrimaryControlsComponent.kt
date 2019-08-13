@@ -1,11 +1,11 @@
 package com.jmoraes.componentizationsample.player.components
 
 import android.annotation.SuppressLint
-import android.support.annotation.VisibleForTesting
 import android.view.ViewGroup
-import com.netflix.arch.ComponentEvent
-import com.netflix.arch.EventBusFactory
-import com.netflix.arch.UIComponent
+import androidx.annotation.VisibleForTesting
+import com.netflix.componentizationV1.ComponentEvent
+import com.netflix.componentizationV1.EventBusFactory
+import com.netflix.componentizationV1.UIComponent
 import com.netflix.elfo.components.PlayerUserInteractionEvents
 import com.netflix.elfo.components.PrimaryControlsUIView
 import io.reactivex.Observable

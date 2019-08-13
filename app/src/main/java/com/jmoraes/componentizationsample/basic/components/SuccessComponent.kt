@@ -1,13 +1,12 @@
 package com.jmoraes.componentizationsample.basic.components
 
 import android.annotation.SuppressLint
-import android.support.annotation.VisibleForTesting
 import android.view.ViewGroup
+import androidx.annotation.VisibleForTesting
 import com.jmoraes.componentizationsample.basic.eventTypes.ScreenStateEvent
 import com.jmoraes.componentizationsample.basic.components.uiViews.SuccessView
-import com.jmoraes.componentizationsample.basic.eventTypes.UserInteractionEvent
-import com.netflix.arch.EventBusFactory
-import com.netflix.arch.UIComponent
+import com.netflix.componentizationV1.EventBusFactory
+import com.netflix.componentizationV1.UIComponent
 import io.reactivex.Observable
 
 @SuppressLint("CheckResult")

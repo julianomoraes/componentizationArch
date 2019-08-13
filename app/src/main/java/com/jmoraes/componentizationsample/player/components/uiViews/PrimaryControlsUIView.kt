@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import com.jmoraes.componentizationsample.R
 import com.jmoraes.componentizationsample.basic.eventTypes.UserInteractionEvent
-import com.netflix.arch.ComponentEvent
-import com.netflix.arch.EventBusFactory
-import com.netflix.arch.UIView
+import com.netflix.componentizationV1.ComponentEvent
+import com.netflix.componentizationV1.EventBusFactory
+import com.netflix.componentizationV1.UIView
 
 class PrimaryControlsUIView(container: ViewGroup, eventBusFactory: EventBusFactory) :
     UIView<UserInteractionEvent>(container) {

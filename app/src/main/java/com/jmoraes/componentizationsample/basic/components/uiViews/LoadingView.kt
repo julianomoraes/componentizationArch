@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jmoraes.componentizationsample.R
-import com.netflix.arch.UIView
+import com.netflix.componentizationV1.UIView
 import com.jmoraes.componentizationsample.basic.eventTypes.UserInteractionEvent
 
 class LoadingView(container: ViewGroup) : UIView<UserInteractionEvent>(container) {

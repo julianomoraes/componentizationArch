@@ -1,4 +1,4 @@
-package com.netflix.arch
+package com.netflix.componentizationV1
 
 import io.reactivex.Observable
 

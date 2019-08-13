@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import com.jmoraes.componentizationsample.R
 import com.jmoraes.componentizationsample.basic.eventTypes.UserInteractionEvent
-import com.netflix.arch.EventBusFactory
-import com.netflix.arch.UIView
+import com.netflix.componentizationV1.EventBusFactory
+import com.netflix.componentizationV1.UIView
 
 class ErrorView(container: ViewGroup, eventBusFactory: EventBusFactory) :
     UIView<UserInteractionEvent>(container) {

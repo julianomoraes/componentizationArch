@@ -1,6 +1,6 @@
 package com.jmoraes.componentizationsample.basic.eventTypes
 
-import com.netflix.arch.ComponentEvent
+import com.netflix.componentizationV1.ComponentEvent
 
 /**
  * List of all events Views can emit

@@ -15,10 +15,10 @@
  *
  * Created by Juliano Moraes, Rohan Dhruva, Emmanuel Boudrant.
  */
-package com.netflix.arch
+package com.netflix.componentizationV1
 
-import android.support.annotation.IdRes
 import android.view.ViewGroup
+import androidx.annotation.IdRes
 
 abstract class UIView<T>(val container: ViewGroup) {
     /**

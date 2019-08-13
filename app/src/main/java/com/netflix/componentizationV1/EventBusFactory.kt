@@ -15,13 +15,13 @@
  *
  * Created by Juliano Moraes, Rohan Dhruva, Emmanuel Boudrant.
  */
-package com.netflix.arch
+package com.netflix.componentizationV1
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleObserver
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.OnLifecycleEvent
-import android.support.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.OnLifecycleEvent
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
@@ -122,8 +122,8 @@ inline fun <reified T : ComponentEvent> LifecycleOwner.getSafeManagedObservable(
     EventBusFactory.get(this).getSafeManagedObservable(T::class.java)
 
 /**
- * This method returns a destroy observable that can be passed to [com.netflix.arch.UIPresenter]s and
- * [com.netflix.arch.UIView]s as needed. This is deliberately scoped to the attached
+ * This method returns a destroy observable that can be passed to [com.netflix.componentizationV1.UIPresenter]s and
+ * [com.netflix.componentizationV1.UIView]s as needed. This is deliberately scoped to the attached
  * [LifecycleOwner]'s [Lifecycle.Event.ON_DESTROY] because a viewholder can be reused across
  * adapter destroys.
  */
