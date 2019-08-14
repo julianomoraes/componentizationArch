@@ -82,13 +82,13 @@ class YourComponent(
 [ReKotlin](https://github.com/ReKotlin/ReKotlin)
 
 
-#### /n
-#### /n
-#### /n
-#### /n
-#### /n
+#### .
+#### .
+#### .
+#### .
+#### .
 
-# Netflix’s Android Componentization Architecture V1 [DEPRECATED]
+# [DEPRECATED] Netflix’s Android Componentization Architecture V1
 
 Lifecycle aware, testable and reusable UI components for Android.
 
