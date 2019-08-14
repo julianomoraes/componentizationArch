@@ -1,4 +1,4 @@
-# Componentization Architecture V2
+# Componentization Architecture v2 - [ReComponents] 
 
 Reactive, lifecycle aware, testable and reusable UI components for Android using Redux.
 
