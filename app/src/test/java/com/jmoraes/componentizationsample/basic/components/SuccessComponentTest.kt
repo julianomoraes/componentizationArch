@@ -1,7 +1,7 @@
 package com.jmoraes.componentizationsample.basic.components
 
-import android.arch.lifecycle.LifecycleOwner
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
 import com.jmoraes.componentizationsample.basic.eventTypes.ScreenStateEvent
 import com.jmoraes.componentizationsample.basic.components.uiViews.SuccessView
 import com.netflix.componentizationV1.EventBusFactory
