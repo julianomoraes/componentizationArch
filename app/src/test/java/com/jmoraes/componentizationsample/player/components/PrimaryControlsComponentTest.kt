@@ -1,7 +1,7 @@
 package com.jmoraes.componentizationsample.player.components
 
-import android.arch.lifecycle.LifecycleOwner
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
 import com.netflix.componentizationV1.EventBusFactory
 import com.netflix.elfo.components.PrimaryControlsUIView
 import com.nhaarman.mockitokotlin2.doReturn
